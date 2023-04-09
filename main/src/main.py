@@ -1,5 +1,5 @@
 from dataToDB.creationBD import creationBD
-from dataToDB.insertionBD import toutInserer, insererPremieresDonnees ,insererCoords, mesDonnes
+from dataToDB.insertionBD import toutInserer, insererPremieresDonnees ,insererCoords, mesDonnes, insertionPopulation
 from dataToDB.query import query
 
 TESTER = True # TRUE = JE FAIS DES TESTS
@@ -21,7 +21,11 @@ if __name__ == "__main__":
         #insererPremieresDonnees(donneesBasePop, TESTER)
         #insererCoords(donneesLaposteHexa, TESTER)
         toutInserer(donneesBasePop, donneesLaposteHexa, TESTER)
+        insertionPopulation(TESTER, donneesBasePop)
+        
         
     if REQUETER:
         #votre requete :
-        query(TESTER, "select * from commune")
+        #query(TESTER, "select * from commune")
+        query(TESTER, "select * from population")
+        
