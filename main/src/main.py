@@ -3,8 +3,8 @@ from dataToDB.insertionBD import toutInserer, insererPremieresDonnees ,insererCo
 from dataToDB.query import query
 
 TESTER = True # TRUE = JE FAIS DES TESTS
-CREER = True # JE CRÉER UNE DB
-INSERER = True # J'INSERE DANS MA DB
+CREER = False # JE CRÉER UNE DB
+INSERER = False # J'INSERE DANS MA DB
 REQUETER = True # je fais une requete a ma DB
 
 if __name__ == "__main__":
@@ -26,6 +26,6 @@ if __name__ == "__main__":
         
     if REQUETER:
         #votre requete :
-        #query(TESTER, "select * from commune")
-        query(TESTER, "select * from population")
+        # exemple : on donne le nom de toute les villes avec leur nombred'habitant en 2020
+        query(TESTER, "select lib, nbHab from commune c, population p WHERE c.codeG=p.codeG AND annees = 2020")
         
