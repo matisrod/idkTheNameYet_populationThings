@@ -112,7 +112,26 @@ def insertionPopulation(TEST, donneesBasePop):
     '''
     on insere dans la table population les données présentent dans donneesBasePop
     '''
-    pass
+    if TEST:
+        db = Database('projetPopulationTEST.db')
+    else:
+        db = Database('projetPopulation.db')
+
+    nbElt = len(donneesBasePop[0])
+    annees = [donneesBasePop[0][x] for x in range(4, nbElt)]
+    annees[-1] = int(annees[-1].replace("\n", ""))
+    for ligne in range(len(donneesBasePop)):
+        for nbPopulation in range(4, nbElt):
+            annee = annees[nbPopulation-4]
+            populationAnneeN = donneesBasePop[ligne][nbPopulation]
+            codeG = donneesBasePop[ligne][0]
+            dataAInserer = [annee, populationAnneeN, codeG]
+
+            data = { nomTablesAttributs["Population"][x] : dataAInserer[x] for x in range( len(nomTablesAttributs["Population"]) ) }
+            db.insert_data("Population", data)
+    print("Insertion population is done !")
+    db.close_connection()
+
 
 
 def mesDonnes(TEST):
@@ -122,10 +141,3 @@ def mesDonnes(TEST):
     donneesBasePop = creerDonneesBasePopulation(TEST)
     donneesLaposteHexa = creerDonneesLaposteHexa(TEST)
     return donneesBasePop, donneesLaposteHexa
-
-
-
-TEST = True
-
-donneesBasePop, donneesLaposteHexa = mesDonnes(TEST)
-print(donneesBasePop)
