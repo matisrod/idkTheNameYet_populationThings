@@ -51,6 +51,9 @@ nomTablesAttributs = {
 
 
 def suppressionDoublon(donneesLaposteHexa):
+    '''
+    suppresion des doublon dans laposteHexa
+    '''
     newDicLaposteHexa = {}
     for ligne in donneesLaposteHexa:
         key = ligne[0]
@@ -61,6 +64,9 @@ def suppressionDoublon(donneesLaposteHexa):
 
 
 def insererPremieresDonnees(donneesBasePop, TEST):
+    '''
+    on insere dans Commune les attributs suivants : codeG, reg, dept et lib
+    '''
     if TEST:
         db = Database('projetPopulationTEST.db')
     else:
@@ -76,6 +82,9 @@ def insererPremieresDonnees(donneesBasePop, TEST):
 
 
 def insererCoords(donneesLaposteHexa, TEST):
+    '''
+    on update la table Commune afin d'y inserer la latitute et la longitude au codeG correspondant 
+    '''
     if TEST:
         db = Database('projetPopulationTEST.db')
     else:
@@ -92,11 +101,31 @@ def insererCoords(donneesLaposteHexa, TEST):
     
 
 def toutInserer(donneesBasePop, donneesLaposteHexa, TEST):
+    '''
+    on insere tout en meme temps : codeG, reg, dept et lib, lat et long
+    '''
     insererPremieresDonnees(donneesBasePop, TEST)
     insererCoords(donneesLaposteHexa, TEST)
 
 
+def insertionPopulation(TEST, donneesBasePop):
+    '''
+    on insere dans la table population les données présentent dans donneesBasePop
+    '''
+    pass
+
+
 def mesDonnes(TEST):
+    '''
+    renvoie sous forme de liste les données extraits des documents textes
+    '''
     donneesBasePop = creerDonneesBasePopulation(TEST)
     donneesLaposteHexa = creerDonneesLaposteHexa(TEST)
     return donneesBasePop, donneesLaposteHexa
+
+
+
+TEST = True
+
+donneesBasePop, donneesLaposteHexa = mesDonnes(TEST)
+print(donneesBasePop)
