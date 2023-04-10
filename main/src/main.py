@@ -3,8 +3,8 @@ from dataToDB.insertionBD import toutInserer, insererPremieresDonnees ,insererCo
 from dataToDB.query import query
 
 TESTER = True # TRUE = JE FAIS DES TESTS
-CREER = False # JE CRÉER UNE DB
-INSERER = False # J'INSERE DANS MA DB
+CREER = True # JE CRÉER UNE DB
+INSERER = True # J'INSERE DANS MA DB
 REQUETER = True # je fais une requete a ma DB
 
 if __name__ == "__main__":
@@ -12,16 +12,18 @@ if __name__ == "__main__":
         #création d'une base de données de test :
         creation = creationBD(TESTER)
         
-    #extraction données des fichiers :
-    donneesBasePop, donneesLaposteHexa = mesDonnes(TESTER)
+    
 
     if INSERER:
+        #extraction données des fichiers :
+        donneesBasePop, donneesLaposteHexa = mesDonnes(TESTER)
+
         #inserer toutes les info : codeGeographique, region, departement, libelleGeo, latitude, longitude
 
         #insererPremieresDonnees(donneesBasePop, TESTER)
         #insererCoords(donneesLaposteHexa, TESTER)
+        #insertionPopulation(TESTER, donneesBasePop)
         toutInserer(donneesBasePop, donneesLaposteHexa, TESTER)
-        insertionPopulation(TESTER, donneesBasePop)
         
         
     if REQUETER:

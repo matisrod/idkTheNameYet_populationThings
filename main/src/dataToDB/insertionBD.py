@@ -98,14 +98,6 @@ def insererCoords(donneesLaposteHexa, TEST):
         db.update_data("Commune", data, condition)
     print("Insertion coords is done !")
     db.close_connection()
-    
-
-def toutInserer(donneesBasePop, donneesLaposteHexa, TEST):
-    '''
-    on insere tout en meme temps : codeG, reg, dept et lib, lat et long
-    '''
-    insererPremieresDonnees(donneesBasePop, TEST)
-    insererCoords(donneesLaposteHexa, TEST)
 
 
 def insertionPopulation(TEST, donneesBasePop):
@@ -141,3 +133,12 @@ def mesDonnes(TEST):
     donneesBasePop = creerDonneesBasePopulation(TEST)
     donneesLaposteHexa = creerDonneesLaposteHexa(TEST)
     return donneesBasePop, donneesLaposteHexa
+
+
+def toutInserer(donneesBasePop, donneesLaposteHexa, TEST):
+    '''
+    on insere tout en meme temps : codeG, reg, dept et lib, lat et long
+    '''
+    insererPremieresDonnees(donneesBasePop, TEST)
+    insererCoords(donneesLaposteHexa, TEST)
+    insertionPopulation(TEST, donneesBasePop)
