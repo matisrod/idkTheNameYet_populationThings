@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def query(TEST, commande, SAUV = True):
     if TEST:
         # Connectez-vous à la base de données
@@ -15,7 +16,7 @@ def query(TEST, commande, SAUV = True):
 
     cur.execute(commande)
 
-    donnees = cur.fetchall()
+    donnees = list(cur.fetchall())
 
     # on regarde si on a des lignes a donner
     if donnees is None:
@@ -26,10 +27,8 @@ def query(TEST, commande, SAUV = True):
             print(i)
         print()
 
-    if SAUV:
-        #sauvegarde des données dans la BD
-        conn.commit()
-
     #fermeture du cursseur et de la connextion
     cur.close()
     conn.close()
+
+    return donnees

@@ -112,7 +112,10 @@ def insertionPopulation(TEST, donneesBasePop):
     nbElt = len(donneesBasePop[0])
     annees = [donneesBasePop[0][x] for x in range(4, nbElt)]
     annees[-1] = int(annees[-1].replace("\n", ""))
-    for ligne in range(len(donneesBasePop)):
+    print("Début insertion Population")
+    for ligne in range(32341, len(donneesBasePop)):
+        if ligne%30 == 0:
+            print("Ligne du fichier : " + str(ligne))
         for nbPopulation in range(4, nbElt):
             annee = annees[nbPopulation-4]
             populationAnneeN = donneesBasePop[ligne][nbPopulation]
