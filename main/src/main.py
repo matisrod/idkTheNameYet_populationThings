@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
         
         #votre requete :
-        reponse = query(TESTER, "select lib, lat, long from commune WHERE dept LIKE '91'")
+        reponse = query(TESTER, "select lib, lat, long from commune WHERE dept LIKE '01' AND long is not null")
         data = {reponse[x][0] : [reponse[x][y] for y in range(1, len(reponse[0]))] for x in range(len(reponse))}
         maMarte = AffichageCarteFrance(data)
         maMarte.creationCarte()
