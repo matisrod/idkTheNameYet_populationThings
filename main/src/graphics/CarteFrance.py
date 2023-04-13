@@ -1,6 +1,7 @@
 import geopandas as gpd
 import pyproj
 import matplotlib.pyplot as plt
+from dataToDB import creationBD, insertionBD, query
 
 
 class AffichageCarteFrance:
@@ -57,8 +58,6 @@ class AffichageCarteFrance:
         self.integrationPoints(ax)
 
         #on rend un meilleur affichage : 
-        #ax.set_xlim(xmin, xmax)
-        #ax.set_ylim(ymin, ymax)
         ax.axis('off')
         # Désactiver l'affichage des coordonnées
         ax.format_coord = lambda x, y: ''
