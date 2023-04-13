@@ -3,16 +3,17 @@ import os
 
 def creationBD(TEST):
     # Connectez-vous à la base de données
+    print(TEST)
     if TEST:
         db_file = "projetPopulationTEST.db"
         NEW_DB = os.path.exists(db_file)
-        conn = sqlite3.connect('projetPopulationTEST.db')
+        conn = sqlite3.connect(db_file)
     else:
+        db_file = "projetPopulation.db"
         makeSureToDelete = input("Etes vous sûr de vouloir detruire la réelle DB (Y / N) ?")
         if makeSureToDelete in ["y", "Y"]:
-            db_file = "projetPopulation.db"
             NEW_DB = os.path.exists(db_file)
-            conn = sqlite3.connect('projetPopulation.db')
+            conn = sqlite3.connect(db_file)
         else:
             print("REFUS DE CRÉATION")
             return #cela veut dire que l'on a rien fait

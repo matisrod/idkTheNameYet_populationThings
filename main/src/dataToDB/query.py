@@ -1,7 +1,7 @@
 import sqlite3
 
 
-def query(TEST, commande, SAUV = True):
+def query(TEST, commande):
     if TEST:
         # Connectez-vous à la base de données
         conn = sqlite3.connect('projetPopulationTEST.db')
@@ -13,13 +13,13 @@ def query(TEST, commande, SAUV = True):
 
     # on execute une commande, que l'on met dans le cursseur, on peut apres le parcourir et afficher les ligne
     # avec une simple boucle ou alors le fetchall pour mettre les info ds une liste
-
+    print("Requête : " + commande)
     cur.execute(commande)
 
     donnees = list(cur.fetchall())
 
     # on regarde si on a des lignes a donner
-    if donnees is None:
+    if donnees == []:
         print("Aucune ligne relevée")
     else:
         # on affiche chaque ligne de ma requete
