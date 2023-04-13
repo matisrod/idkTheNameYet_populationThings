@@ -20,12 +20,12 @@ def query(TEST, commande):
 
     # on regarde si on a des lignes a donner
     if donnees == []:
-        print("Aucune ligne relevée")
+        pass
+        #print("Aucune ligne relevée")
     else:
         # on affiche chaque ligne de ma requete
         for i in donnees:
             print(i)
-        print()
 
     #fermeture du cursseur et de la connextion
     cur.close()
