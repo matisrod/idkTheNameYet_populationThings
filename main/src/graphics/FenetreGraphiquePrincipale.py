@@ -10,6 +10,17 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import os
 
 
+WORD_CONVERTOR = {
+    "Moyenne" : "AVG",
+    "Somme" : "SUM",
+    "Maximum" : "MAX",
+    "Minimum" : "MIN",
+    "Années" : "annees",
+    "Région" : "reg",
+    "Département" : "dept"
+}
+
+
 class FenetreGraphique:
     def __init__(self, x=500, y=300):
         self.root = tk.Tk()
@@ -31,6 +42,7 @@ class FenetreGraphique:
         self.afficheTab = tk.BooleanVar()
         self.afficheTab.set(False)
         self.fig = None
+
 
     def convX(self, x):
         # converti les x en une bonne longeur
@@ -75,6 +87,8 @@ class FenetreGraphique:
     '''
 
 
+    ########################################################################################################
+
     def continuerAfficher(self):
         self.root.mainloop()
 
@@ -97,7 +111,11 @@ class FenetreGraphique:
             toutInserer(False)
             self.BASEREELLE.set(False)
 
-    
+
+
+
+
+    ########################################################################################################
     '''
     PARTIE LA MISE A JOUR / CREATION DES BASES DE DONNEES
     '''
@@ -123,6 +141,9 @@ class FenetreGraphique:
 
 
 
+
+
+    ########################################################################################################
     '''
     PARTIE SUR LES REQUETES QUE L'ON DEMANDE A UNE CERTAINE BD
     '''
@@ -202,6 +223,8 @@ class FenetreGraphique:
 
 
 
+
+    ########################################################################################################
     '''
     PARTIE SUR LES REQUETES PERMETTANT D'AFFICHER LES DONNEES SUR UN GRAPHIQUE
     '''
@@ -210,10 +233,11 @@ class FenetreGraphique:
         if self.afficheTab.get():
             self.buttonTab.configure(text="Affiche tableau : OFF")
             self.afficheTab.set(False)
+            
         else:
             self.buttonTab.configure(text="Affiche tableau : ON")
             self.afficheTab.set(True)
-            self.creerTab()
+            self.afficheTabEnFonctionDonnees()
         self.resize_window()
 
 
@@ -235,11 +259,19 @@ class FenetreGraphique:
         self.buttonTab.place(x= self.convX(160), y=270)
 
 
-    def creerTab(self):
+    def creerTab(self, abscisse, ordonnee):
+        #self.afficheTabEnFonctionDonnees()
         if self.fig is None:
+            #si c'est la premiere fois qu'on le trace
             self.fig = Figure(figsize=(8, 3), dpi=100)
-            ax = self.fig.add_subplot(111)
-            ax.plot([1, 2, 3, 4, 5], [10, 5, 15, 10, 20])
+            self.ax = self.fig.add_subplot(111)
+            self.ax.plot(abscisse, ordonnee)
+        else:
+            #si le graph est déja tracé alors on le clear pour le retracer
+            self.fig = Figure(figsize=(8, 3), dpi=100)
+            self.ax.clear()
+            self.ax = self.fig.add_subplot(111)
+            self.ax.plot(abscisse, ordonnee)
         
         if self.afficheTab.get():
             canvas = FigureCanvasTkAgg(self.fig, master=self.root)
@@ -248,7 +280,63 @@ class FenetreGraphique:
             canvas.get_tk_widget().place(x=xPlace, y=yPLace)
 
 
+    def afficheFonctionsDuTab(self):
+        labelMenu1 = tk.Label(self.root, text="Agrégation :")
+        labelMenu1.place(x=12, y=130)
 
+        labelMenu2 = tk.Label(self.root, text="Abscisse :")
+        labelMenu2.place(x=117, y=130)
+
+
+        self.selected_option1 = tk.StringVar(self.root)
+        self.selected_option1.set("Moyenne")
+        self.selected_option1.trace("w", self.afficheTabEnFonctionDonnees)
+        self.agreDuGraph = tk.OptionMenu(self.root, self.selected_option1, "Moyenne", "Somme", "Maximum", "Minimum")
+        self.agreDuGraph.config(width=10)
+        self.agreDuGraph.place(x=10, y= 150)
+
+        self.selected_option2 = tk.StringVar(self.root)
+        self.selected_option2.set("Années")
+        self.selected_option2.trace("w", self.afficheTabEnFonctionDonnees)
+        self.absDuGraph = tk.OptionMenu(self.root, self.selected_option2, "Années", "Région", "Département")
+        self.absDuGraph.config(width=10)
+        self.absDuGraph.place(x=115, y= 150)
+
+
+    def afficheTabEnFonctionDonnees(self, *args):
+        self.root.update()
+        if self.selected_option2.get() != "Années":
+            requete = f"SELECT {WORD_CONVERTOR[self.selected_option2.get()]}, {WORD_CONVERTOR[self.selected_option1.get()]}(nbHab) FROM commune c, population p WHERE c.codeG=p.codeG GROUP BY {WORD_CONVERTOR[self.selected_option2.get()]};"
+        else:
+            requete = f"SELECT {WORD_CONVERTOR[self.selected_option2.get()]}, {WORD_CONVERTOR[self.selected_option1.get()]}(nbHab) FROM population GROUP BY {WORD_CONVERTOR[self.selected_option2.get()]};"
+        
+        reponse = query(False, requete)
+        abscisse = []
+        ordonnee = []
+        for ligne in range(len(reponse)):
+            abscisse.append(reponse[ligne][0])
+            ordonnee.append(reponse[ligne][1])
+        
+        self.creerTab(abscisse, ordonnee)
+
+
+
+
+    ########################################################################################################
+
+    '''
+    PARTIE SUR L'AFFICHAGE DE LA CARTE DE FRANCE
+    '''
+
+    def afficheVilleSelect(self):
+        '''
+        affiche la carte de france avec les ville sélectionner dans la requete
+        '''
+        pass
+
+
+
+    ########################################################################################################
     '''
     PARTIE SUR LA FERMETURE ET LA BOUCLE INFINIE DE LA FENETRE
     '''
@@ -263,6 +351,9 @@ class FenetreGraphique:
         self.root.destroy()
 
 
+
+
+
 def mainfenetre():
     # Créer une instance de la classe FenetreGraphique pour afficher la fenêtre
     fenetre = FenetreGraphique(500, 300)
@@ -275,6 +366,7 @@ def mainfenetre():
     fenetre.requeterBase()
 
     fenetre.afficheGraphiqueDonnees()
+    fenetre.afficheFonctionsDuTab()
 
     fenetre.boutonExit()
     fenetre.continuerAfficher()
