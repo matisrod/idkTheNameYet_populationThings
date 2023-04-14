@@ -18,10 +18,14 @@ class FenetreGraphique:
         self.baseTestExists = os.path.exists("projetPopulationTEST.db")
         self.baseReelleExists = os.path.exists("projetPopulation.db")
 
-        self.requete = tk.Text(self.root, width=(35*self.width)//400, height=(5*self.height)//400 + 1)
+        self.requete = tk.Text(self.root, width=self.convX(35), height=(5*self.height)//400 + 1)
         self.boutonsBaseSelect = tk.StringVar()
         self.boutonsBaseSelect.set("None")
         self.errorText = None
+
+    def convX(self, x):
+        # converti les x en une bonne longeur
+        return (x*self.width)//400
 
 
     def lancerFenetre(self):
@@ -41,17 +45,9 @@ class FenetreGraphique:
 
         # lancer la fenetre en fonction de la taille de l'écran
         self.root.geometry("500x300+{}+{}".format(x, y))
+    
 
     '''
-    def tracerTrait(self):
-        # Créer un canvas de 400x300 pixels
-        self.canvas = tk.Canvas(self.root, width=400, height=300)
-        self.canvas.pack()
-        
-        # Tracer un trait rouge
-        self.canvas.create_line(50, 50, 350, 250, fill="black")
-
-        
     def faireDemande(self):
         # Créer le premier champ de texte et lui lier l'événement <Return>
         self.entry1 = tk.Entry(self.root)
@@ -68,13 +64,8 @@ class FenetreGraphique:
         texte = self.entry1.get()
         print("Texte saisi dans le premier champ :", texte)
         self.entry2.focus_set()
-    
-
-    def traiter_entree2(self, event):
-        texte = self.entry2.get()
-        texte.place(x=100, y=100)
-        print("Texte saisi dans le deuxième champ :", texte)
     '''
+
 
     def continuerAfficher(self):
         self.root.mainloop()
@@ -85,7 +76,6 @@ class FenetreGraphique:
         TESTER, CREER, INSERER, REQUETER en fonction des var 1, 2, 4 et 4
         '''
         self.root.update() # Met à jour l'état des cases à cocher
-        #print(self.TESTER.get(), self.CREER.get(), self.INSERER.get(), self.REQUETER.get())
 
         if self.BASETEST.get():
             #on cré la base de données test ou non
@@ -116,7 +106,7 @@ class FenetreGraphique:
         checkbutton1 = tk.Checkbutton(cadre, text="BD réelle", variable=self.BASEREELLE)
         checkbutton1.place(x=memeX,y=30)
 
-        bouton = tk.Button(cadre, text="Charger", command=lambda: self.executeUpdateBase, state="normal")
+        bouton = tk.Button(cadre, text="Charger", command=self.executeUpdateBase, state="normal")
         bouton.place(x=(21*self.width)/400, y=64)
 
 
