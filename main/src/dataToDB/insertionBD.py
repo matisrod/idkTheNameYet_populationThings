@@ -17,8 +17,6 @@ class Database:
         values = ', '.join(['?' for _ in range(len(data.values()))])
         request = f"INSERT INTO {table_name} ({keys}) VALUES ({values})"
         self.cur.execute(request, tuple(data.values()))
-        if ALERTES:
-            print("Data inserted successfully!")
     
 
     def update_data(self, table_name, new_data, condition):
@@ -29,8 +27,6 @@ class Database:
         query = f"UPDATE {table_name} SET {set_clause} WHERE {condition}"
         parameters = tuple(new_data.values())
         self.cur.execute(query, parameters)
-        if ALERTES:
-            print("Data updated successfully!")
         
 
     def close_connection(self):
@@ -66,10 +62,10 @@ def insererPremieresDonnees(donneesBasePop, db):
     '''
     for nLigne in range(1, len(donneesBasePop)):
         data = {}
-        if nLigne%250 == 0:
+        if nLigne%500 == 0:
             db.conn.commit()
-            if nLigne%1000 == 0:
-                print("Ligne " + str(nLigne) + "de Base Population") 
+            if nLigne%1500 == 0:
+                print("Insertion ligne " + str(nLigne) + " de codeG, reg, dept et lib dans commune") 
 
         for x in range((len(nomTablesAttributs["Commune"])-2)):
             data[nomTablesAttributs["Commune"][x]] = donneesBasePop[nLigne][x]
@@ -83,10 +79,10 @@ def insererCoords(donneesLaposteHexa, db):
     '''
     donneesLaposteHexa = suppressionDoublon(donneesLaposteHexa)
     for ligne in range(1, len(donneesLaposteHexa)):
-        if ligne%280 == 0:
+        if ligne%500 == 0:
             db.conn.commit()
-            if ligne%1120 == 0:
-                print("Ligne " + str(ligne) + "de Base Population") 
+            if ligne%1500 == 0:
+                print("Insertion ligne " + str(ligne) + " de latitude et longitude dans commune") 
         latitude, longitude = donneesLaposteHexa[ligne][-2], donneesLaposteHexa[ligne][-1]
         data = {nomTablesAttributs["Commune"][-2] : latitude, nomTablesAttributs["Commune"][-1] : longitude}
         condition = f"codeG LIKE '{donneesLaposteHexa[ligne][0]}'"
@@ -102,10 +98,10 @@ def insertionPopulation(donneesBasePop, db):
     annees = [donneesBasePop[0][x] for x in range(4, nbElt)]
     annees[-1] = int(annees[-1].replace("\n", ""))
     for ligne in range(1, len(donneesBasePop)):
-        if ligne%35 == 0:
+        if ligne%50 == 0:
             db.conn.commit()
-            if ligne%1400 == 0:
-                print("Ligne " + str(ligne) + "de Base Population") 
+            if ligne%1500 == 0:
+                print("Insertion ligne " + str(ligne) + " des populations") 
         for nbPopulation in range(4, nbElt):
             annee = annees[nbPopulation-4]
             populationAnneeN = donneesBasePop[ligne][nbPopulation]

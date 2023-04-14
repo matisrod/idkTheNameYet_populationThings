@@ -2,7 +2,7 @@ from dataToDB.creationBD import creationBD
 from dataToDB.insertionBD import toutInserer, insererPremieresDonnees ,insererCoords, mesDonnes, insertionPopulation
 from dataToDB.query import query
 from graphics.CarteFrance import AffichageCarteFrance
-from graphics.FenetreDesParametres import mainfenetre
+from graphics.FenetreGraphiquePrincipale import mainfenetre
 
 TESTER = False # TRUE = JE FAIS DES TESTS
 CREER = False # JE CRÉER UNE DB
