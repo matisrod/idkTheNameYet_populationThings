@@ -3,6 +3,10 @@ from graphics.erreurs import dicoErreur
 from dataToDB.creationBD import creationBD
 from dataToDB.insertionBD import toutInserer
 from dataToDB.query import query
+
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 import os
 
 
@@ -22,6 +26,11 @@ class FenetreGraphique:
         self.boutonsBaseSelect = tk.StringVar()
         self.boutonsBaseSelect.set("None")
         self.errorText = None
+
+
+        self.afficheTab = tk.BooleanVar()
+        self.afficheTab.set(False)
+        self.fig = None
 
     def convX(self, x):
         # converti les x en une bonne longeur
@@ -59,7 +68,6 @@ class FenetreGraphique:
         self.entry2.pack()
         self.entry2.bind("<Return>", self.traiter_entree2)
     
-
     def traiter_entree1(self, event):
         texte = self.entry1.get()
         print("Texte saisi dans le premier champ :", texte)
@@ -90,6 +98,10 @@ class FenetreGraphique:
             self.BASEREELLE.set(False)
 
     
+    '''
+    PARTIE LA MISE A JOUR / CREATION DES BASES DE DONNEES
+    '''
+
     def miseAJourBase(self):
         '''
         demander avec des bouton si oui ou non le user veut : TESTER, CREER, INSERER, REQUETER
@@ -109,6 +121,11 @@ class FenetreGraphique:
         bouton = tk.Button(cadre, text="Charger", command=self.executeUpdateBase, state="normal")
         bouton.place(x=(21*self.width)/400, y=64)
 
+
+
+    '''
+    PARTIE SUR LES REQUETES QUE L'ON DEMANDE A UNE CERTAINE BD
+    '''
 
     def requeterBase(self):
         boutonExec = tk.Button(self.root, text="Exécuter", command=self.traiterRequete, state="normal")
@@ -184,10 +201,62 @@ class FenetreGraphique:
         self.root.after(4000, self.supprimeTexte)
 
 
+
+    '''
+    PARTIE SUR LES REQUETES PERMETTANT D'AFFICHER LES DONNEES SUR UN GRAPHIQUE
+    '''
+
+    def changeValeurBouton(self):
+        if self.afficheTab.get():
+            self.buttonTab.configure(text="Affiche tableau : OFF")
+            self.afficheTab.set(False)
+        else:
+            self.buttonTab.configure(text="Affiche tableau : ON")
+            self.afficheTab.set(True)
+            self.creerTab()
+        self.resize_window()
+
+
+    def resize_window(self):
+        if self.afficheTab.get():
+            self.root.geometry(f"{int(self.width*2.5)}x{self.height}")
+        else:
+            self.root.geometry(f"{self.width}x{self.height}")
+
+
+    def executeBoutonTap(self):
+        self.resize_window()
+        self.changeValeurBouton()
+
+
+    def afficheGraphiqueDonnees(self):
+        #bouton permettant de voir le tab ou non en élargissant la fenetre
+        self.buttonTab = tk.Button(self.root, text="Affiche tableau : OFF", command=self.executeBoutonTap)
+        self.buttonTab.place(x= self.convX(160), y=270)
+
+
+    def creerTab(self):
+        if self.fig is None:
+            self.fig = Figure(figsize=(8, 3), dpi=100)
+            ax = self.fig.add_subplot(111)
+            ax.plot([1, 2, 3, 4, 5], [10, 5, 15, 10, 20])
+        
+        if self.afficheTab.get():
+            canvas = FigureCanvasTkAgg(self.fig, master=self.root)
+            canvas.draw()
+            xPlace, yPLace = self.width + 10, 0
+            canvas.get_tk_widget().place(x=xPlace, y=yPLace)
+
+
+
+    '''
+    PARTIE SUR LA FERMETURE ET LA BOUCLE INFINIE DE LA FENETRE
+    '''
+
     def boutonExit(self):
         bouton = tk.Button(self.root, text="Quiter", command=self.fermer_fenetre)
         # Affichage du bouton dans la fenêtre
-        bouton.place(x=self.width-50, y=self.height-30)
+        bouton.place(x=10, y=self.height-30)
 
 
     def fermer_fenetre(self):
@@ -204,6 +273,8 @@ def mainfenetre():
 
     # exécution des requetes sur la base de données sélectionenner
     fenetre.requeterBase()
+
+    fenetre.afficheGraphiqueDonnees()
 
     fenetre.boutonExit()
     fenetre.continuerAfficher()

@@ -1,7 +1,6 @@
 import geopandas as gpd
 import pyproj
 import matplotlib.pyplot as plt
-from dataToDB import creationBD, insertionBD, query
 
 
 class AffichageCarteFrance:
