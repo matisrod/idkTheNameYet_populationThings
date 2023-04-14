@@ -3,7 +3,6 @@ import os
 
 def creationBD(TEST):
     # Connectez-vous à la base de données
-    print(TEST)
     if TEST:
         db_file = "projetPopulationTEST.db"
         NEW_DB = os.path.exists(db_file)
@@ -48,6 +47,11 @@ def creationBD(TEST):
 
     #sauvegarde des données dans la BD
     conn.commit()
+
+    if TEST:
+        print("Base de test bien créée.")
+    else:
+        print("Base réelle bien créée.")
 
     #fermeture du cursseur et de la connextion
     cur.close()

@@ -2,6 +2,8 @@ import sqlite3
 
 
 def query(TEST, commande):
+    assert commande!= "\n", f"La comamnde de la requete est vide."
+
     if TEST:
         # Connectez-vous à la base de données
         conn = sqlite3.connect('projetPopulationTEST.db')
