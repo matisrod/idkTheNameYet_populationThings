@@ -22,8 +22,7 @@ def query(TEST, commande):
 
     # on regarde si on a des lignes a donner
     if donnees == []:
-        pass
-        #print("Aucune ligne relevée")
+        print("Aucune ligne relevée")
     else:
         # on affiche chaque ligne de ma requete
         for i in donnees:
