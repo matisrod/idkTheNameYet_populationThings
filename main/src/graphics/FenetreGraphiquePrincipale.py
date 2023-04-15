@@ -87,6 +87,10 @@ class FenetreGraphique:
     '''
 
 
+    '''
+    PARTIE LA MISE A JOUR / CREATION DES BASES DE DONNEES
+    '''
+
     ########################################################################################################
 
     def continuerAfficher(self):
@@ -111,14 +115,6 @@ class FenetreGraphique:
             toutInserer(False)
             self.BASEREELLE.set(False)
 
-
-
-
-
-    ########################################################################################################
-    '''
-    PARTIE LA MISE A JOUR / CREATION DES BASES DE DONNEES
-    '''
 
     def miseAJourBase(self):
         '''
@@ -344,7 +340,7 @@ class FenetreGraphique:
     def boutonExit(self):
         bouton = tk.Button(self.root, text="Quiter", command=self.fermer_fenetre)
         # Affichage du bouton dans la fenêtre
-        bouton.place(x=10, y=self.height-30)
+        bouton.place(x=self.convX(10), y=self.height-30)
 
 
     def fermer_fenetre(self):
